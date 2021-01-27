@@ -1,10 +1,13 @@
 package com.ezequias.despesas.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -12,35 +15,40 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 @Entity
-public class Entrada implements Serializable{
+public class Despesa implements Serializable{
 private static final long serialVersionUID = 1L;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;		
 	private String descricao;
-	private Double valor;
-	@JsonFormat(pattern="dd/MM/yyyy")
+	private Double valor;	
 	private Date cadastro;
+	
+	@OneToMany(cascade=CascadeType.ALL)
+	@JoinTable(name = "DESPESA_DESPESAITEM",
+		joinColumns = @JoinColumn(name = "despesa_id"),
+		inverseJoinColumns = @JoinColumn(name = "despesaitem_id")
+	)
+	private List<DespesaItem> itens = new ArrayList<>();
 	
 	@ElementCollection(fetch=FetchType.EAGER)
 	@CollectionTable(name="referencias")
 	private Set<Integer> referencias = new HashSet<>();
 	
-	public Entrada() {
-		this.cadastro = new Date();
-	}
+	public Despesa() {}
 
-	public Entrada(Integer id, String descricao, Double valor) {
+	public Despesa(Integer id, String descricao, Double valor) {
 		super();
 		this.id = id;
 		this.descricao = descricao;
 		this.valor = valor;
-		this.cadastro = new Date();
 	}
 
 	public Integer getId() {
@@ -67,16 +75,29 @@ private static final long serialVersionUID = 1L;
 		this.valor = valor;
 	}
 
-	public Date getCadastro() {
-		return cadastro;
-	}
-	
 	public Set<Integer> getReferencias() {
 		return referencias;
 	}
 
 	public void setReferencias(Set<Integer> referencias) {
 		this.referencias = referencias;
+	}
+	
+
+	public Date getCadastro() {
+		return cadastro;
+	}
+
+	public void setCadastro(Date cadastro) {
+		this.cadastro = cadastro;
+	}
+
+	public List<DespesaItem> getItens() {
+		return itens;
+	}
+
+	public void setItens(List<DespesaItem> itens) {
+		this.itens = itens;
 	}
 
 	@Override
@@ -95,7 +116,7 @@ private static final long serialVersionUID = 1L;
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Entrada other = (Entrada) obj;
+		Despesa other = (Despesa) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

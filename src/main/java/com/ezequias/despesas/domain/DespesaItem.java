@@ -13,35 +13,32 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 @Entity
-public class Entrada implements Serializable{
+public class DespesaItem implements Serializable{
 private static final long serialVersionUID = 1L;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;		
 	private String descricao;
-	private Double valor;
-	@JsonFormat(pattern="dd/MM/yyyy")
-	private Date cadastro;
-	
-	@ElementCollection(fetch=FetchType.EAGER)
-	@CollectionTable(name="referencias")
-	private Set<Integer> referencias = new HashSet<>();
-	
-	public Entrada() {
-		this.cadastro = new Date();
-	}
+	private Double valor;	
+	private Double quantidade;
+	private Double total;
+		
+	public DespesaItem() {}
 
-	public Entrada(Integer id, String descricao, Double valor) {
+	
+
+	public DespesaItem(Integer id, String descricao, Double valor, Double quantidade) {
 		super();
 		this.id = id;
 		this.descricao = descricao;
 		this.valor = valor;
-		this.cadastro = new Date();
+		this.quantidade = quantidade;
+		this.total = valor * quantidade;
 	}
+
+
 
 	public Integer getId() {
 		return id;
@@ -67,17 +64,19 @@ private static final long serialVersionUID = 1L;
 		this.valor = valor;
 	}
 
-	public Date getCadastro() {
-		return cadastro;
-	}
-	
-	public Set<Integer> getReferencias() {
-		return referencias;
+	public Double getQuantidade() {
+		return quantidade;
 	}
 
-	public void setReferencias(Set<Integer> referencias) {
-		this.referencias = referencias;
+	public void setQuantidade(Double quantidade) {
+		this.quantidade = quantidade;
 	}
+
+	public Double getTotal() {
+		return total;
+	}
+
+
 
 	@Override
 	public int hashCode() {
@@ -95,7 +94,7 @@ private static final long serialVersionUID = 1L;
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Entrada other = (Entrada) obj;
+		DespesaItem other = (DespesaItem) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -103,6 +102,5 @@ private static final long serialVersionUID = 1L;
 			return false;
 		return true;
 	}
-	
 	
 }

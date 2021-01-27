@@ -13,34 +13,28 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 @Entity
-public class Entrada implements Serializable{
+public class Saida implements Serializable{
 private static final long serialVersionUID = 1L;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;		
 	private String descricao;
-	private Double valor;
-	@JsonFormat(pattern="dd/MM/yyyy")
+	private Double valor;	
 	private Date cadastro;
 	
 	@ElementCollection(fetch=FetchType.EAGER)
 	@CollectionTable(name="referencias")
 	private Set<Integer> referencias = new HashSet<>();
 	
-	public Entrada() {
-		this.cadastro = new Date();
-	}
+	public Saida() {}
 
-	public Entrada(Integer id, String descricao, Double valor) {
+	public Saida(Integer id, String descricao, Double valor) {
 		super();
 		this.id = id;
 		this.descricao = descricao;
 		this.valor = valor;
-		this.cadastro = new Date();
 	}
 
 	public Integer getId() {
@@ -67,10 +61,6 @@ private static final long serialVersionUID = 1L;
 		this.valor = valor;
 	}
 
-	public Date getCadastro() {
-		return cadastro;
-	}
-	
 	public Set<Integer> getReferencias() {
 		return referencias;
 	}
@@ -95,7 +85,7 @@ private static final long serialVersionUID = 1L;
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Entrada other = (Entrada) obj;
+		Saida other = (Saida) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
