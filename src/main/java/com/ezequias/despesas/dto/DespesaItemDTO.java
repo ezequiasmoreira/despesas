@@ -3,7 +3,8 @@ package com.ezequias.despesas.dto;
 import com.ezequias.despesas.domain.DespesaItem;
 
 public class DespesaItemDTO {
-	private Integer id;		
+	private Integer id;	
+	private Integer despesaId;
 	private String descricao;
 	private Double valor;	
 	private Double quantidade;
@@ -59,6 +60,13 @@ public class DespesaItemDTO {
 	public void setTotal(Double total) {
 		this.total = total;
 	}
-	
+
+	public Integer getDespesaId() {
+		return despesaId;
+	}
+
+	public void setDespesaId(Integer despesaId) {
+		this.despesaId = despesaId;
+	}
 	
 }

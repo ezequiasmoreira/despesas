@@ -34,16 +34,9 @@ public class DespesaItemResource {
 	}
 	
 	@Transactional(rollbackOn = Exception.class)
-	@RequestMapping(method=RequestMethod.POST)
-	public ResponseEntity<List<DespesaItem>> salvar(@RequestBody List<DespesaItemDTO> listDto) {
-		
-		List<DespesaItem> itens = new ArrayList<DespesaItem>();
-		for (DespesaItemDTO despesaItemDTO : listDto) {
-			DespesaItem despesaItem = service.converterParaDTO(despesaItemDTO);
-			despesaItem = service.salvar(despesaItem);	
-			itens.add(despesaItem);
-		}
-		
+	@RequestMapping(value="/save-all",method=RequestMethod.POST)
+	public ResponseEntity<List<DespesaItem>> salvar(@RequestBody List<DespesaItemDTO> listDto) {		
+		List<DespesaItem> itens = service.salvarTodos(listDto);		
 		return ResponseEntity.ok().body(itens);
 	}
 	

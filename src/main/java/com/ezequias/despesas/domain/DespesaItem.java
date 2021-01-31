@@ -12,6 +12,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class DespesaItem implements Serializable{
@@ -20,20 +22,24 @@ private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
-	private Integer despesaId;
 	private String descricao;
 	private Double valor = 0.0;	
 	private Double quantidade = 0.0;
 	private Double total = 0.0;	
+	
+	@ManyToOne
+	@JoinColumn(name="despesa_id")
+	private Despesa despesa;
 		
 	public DespesaItem() {}	
 
-	public DespesaItem(Integer id, String descricao, Double valor, Double quantidade) {
+	public DespesaItem(Integer id, String descricao, Double valor, Double quantidade, Despesa despesa) {
 		super();
 		this.id = id;
 		this.descricao = descricao;
 		this.valor = valor;
 		this.quantidade = quantidade;
+		this.despesa = despesa;
 		this.total = valor * quantidade;
 	}
 
@@ -75,7 +81,13 @@ private static final long serialVersionUID = 1L;
 		return total;
 	}
 
+	public Despesa getDespesa() {
+		return despesa;
+	}
 
+	public void setDespesa(Despesa despesa) {
+		this.despesa = despesa;
+	}
 
 	@Override
 	public int hashCode() {

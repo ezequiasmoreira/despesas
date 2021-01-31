@@ -1,5 +1,6 @@
 package com.ezequias.despesas.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,6 +29,17 @@ public class DespesaItemService {
 	public DespesaItem salvar(DespesaItem despesaItem) {		
 		despesaItem.setId(null);
 		return despesaItemRepository.save(despesaItem);
+	}
+	
+
+	public List<DespesaItem> salvarTodos(List<DespesaItemDTO> listDespesaItensDTO) {		
+		List<DespesaItem> itens = new ArrayList<DespesaItem>();
+		for (DespesaItemDTO despesaItemDTO : listDespesaItensDTO) {
+			DespesaItem despesaItem = converterParaDTO(despesaItemDTO);
+			despesaItem = salvar(despesaItem);				
+			itens.add(despesaItem);
+		}
+		return itens;
 	}
 
 	public DespesaItem atualizar(DespesaItemDTO despesaItemDTO) {		
