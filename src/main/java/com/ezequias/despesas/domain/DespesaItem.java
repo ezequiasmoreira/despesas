@@ -19,15 +19,14 @@ private static final long serialVersionUID = 1L;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Integer id;		
+	private Integer id;
+	private Integer despesaId;
 	private String descricao;
-	private Double valor;	
-	private Double quantidade;
-	private Double total;
+	private Double valor = 0.0;	
+	private Double quantidade = 0.0;
+	private Double total = 0.0;	
 		
-	public DespesaItem() {}
-
-	
+	public DespesaItem() {}	
 
 	public DespesaItem(Integer id, String descricao, Double valor, Double quantidade) {
 		super();
@@ -37,8 +36,6 @@ private static final long serialVersionUID = 1L;
 		this.quantidade = quantidade;
 		this.total = valor * quantidade;
 	}
-
-
 
 	public Integer getId() {
 		return id;
@@ -62,6 +59,7 @@ private static final long serialVersionUID = 1L;
 
 	public void setValor(Double valor) {
 		this.valor = valor;
+		this.total= this.valor * this.quantidade;
 	}
 
 	public Double getQuantidade() {
@@ -70,6 +68,7 @@ private static final long serialVersionUID = 1L;
 
 	public void setQuantidade(Double quantidade) {
 		this.quantidade = quantidade;
+		this.total= this.valor * this.quantidade;
 	}
 
 	public Double getTotal() {
