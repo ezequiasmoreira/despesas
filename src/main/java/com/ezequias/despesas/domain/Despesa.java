@@ -15,11 +15,11 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import com.fasterxml.jackson.annotation.JsonFormat;
 @Entity
 public class Despesa implements Serializable{
 private static final long serialVersionUID = 1L;
@@ -29,6 +29,7 @@ private static final long serialVersionUID = 1L;
 	private Integer id;		
 	private String descricao;
 	private Double valor;	
+	@JsonFormat(pattern="dd/MM/yyyy")
 	private Date cadastro;
 	
 	@OneToMany(cascade=CascadeType.ALL)
@@ -42,13 +43,16 @@ private static final long serialVersionUID = 1L;
 	@CollectionTable(name="referencias")
 	private Set<Integer> referencias = new HashSet<>();
 	
-	public Despesa() {}
-
+	public Despesa() {
+		this.cadastro = new Date();
+	}
+	
 	public Despesa(Integer id, String descricao, Double valor) {
 		super();
 		this.id = id;
 		this.descricao = descricao;
 		this.valor = valor;
+		this.cadastro = new Date();
 	}
 
 	public Integer getId() {
@@ -82,14 +86,9 @@ private static final long serialVersionUID = 1L;
 	public void setReferencias(Set<Integer> referencias) {
 		this.referencias = referencias;
 	}
-	
 
 	public Date getCadastro() {
 		return cadastro;
-	}
-
-	public void setCadastro(Date cadastro) {
-		this.cadastro = cadastro;
 	}
 
 	public List<DespesaItem> getItens() {
