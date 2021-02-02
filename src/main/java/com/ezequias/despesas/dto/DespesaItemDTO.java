@@ -19,6 +19,7 @@ public class DespesaItemDTO {
 		this.valor = despesaItem.getValor();
 		this.quantidade = despesaItem.getQuantidade();
 		this.total = despesaItem.getTotal();
+		this.despesaId = despesaItem.getDespesa().getId();
 	}
 
 	public Integer getId() {

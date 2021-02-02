@@ -8,6 +8,7 @@ import com.ezequias.despesas.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ezequias.despesas.domain.Despesa;
 import com.ezequias.despesas.domain.DespesaItem;
 import com.ezequias.despesas.dto.DespesaItemDTO;
 import com.ezequias.despesas.repository.DespesaItemRepository;
@@ -17,12 +18,18 @@ public class DespesaItemService {
 
 	@Autowired
 	private DespesaItemRepository despesaItemRepository;
+	@Autowired
+	private DespesaService despesaService;
 
 	public DespesaItem converterParaDTO(DespesaItemDTO dto) {		
 		DespesaItem despesaItem = new DespesaItem();
 		despesaItem.setDescricao(dto.getDescricao());
 		despesaItem.setValor(dto.getValor());
 		despesaItem.setQuantidade(dto.getQuantidade());
+		Despesa despesa = despesaService.obterPorId(dto.getDespesaId());
+		despesaItem.setDespesa(despesa);
+		despesa.getItens().add(despesaItem);
+		despesaService.atualizar(despesa);
 		return despesaItem;
 	}
 
@@ -55,7 +62,9 @@ public class DespesaItemService {
 		return despesaItemRepository.save(despesaItem);		
 	}
 
-	public void excluir(DespesaItem despesaItem){		
+	public void excluir(DespesaItem despesaItem){
+		despesaItem.getDespesa().getItens().remove(despesaItem);
+		despesaService.atualizar(despesaItem.getDespesa());
 		despesaItemRepository.deleteById(despesaItem.getId());
 	}
 

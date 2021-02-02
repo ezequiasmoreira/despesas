@@ -39,7 +39,7 @@ public class DBService {
 		despesa1.setValor(100.00);
 		
 		Despesa despesa2 = new Despesa();
-		despesa2.setDescricao("Aguá");
+		despesa2.setDescricao("Compra");
 		despesa2.setValor(50.00);
 		
 		despesaRepository.saveAll(Arrays.asList(despesa1, despesa2));	
@@ -48,17 +48,26 @@ public class DBService {
 		despesaItem.setDescricao("Energia");
 		despesaItem.setValor(90.50);
 		despesaItem.setQuantidade(1.00);
+		despesaItem.setDespesa(despesa1);		
 		
 		DespesaItem despesaItem2 = new DespesaItem();
 		despesaItem2.setDescricao("Sabão");
 		despesaItem2.setValor(2.90);
 		despesaItem2.setQuantidade(1.00);
+		despesaItem2.setDespesa(despesa2);
 		
 		DespesaItem despesaItem3 = new DespesaItem();
 		despesaItem3.setDescricao("Refrigerante");
 		despesaItem3.setValor(4.99);
 		despesaItem3.setQuantidade(3.00);
+		despesaItem3.setDespesa(despesa2);
 		
 		despesaItemRepository.saveAll(Arrays.asList(despesaItem,despesaItem2,despesaItem3));	
+		
+		//vincular os itens na despesa
+		despesa1.getItens().add(despesaItem);
+		despesa2.getItens().add(despesaItem2);
+		despesa2.getItens().add(despesaItem3);
+		despesaRepository.saveAll(Arrays.asList(despesa1, despesa2));	
 	}
 }

@@ -3,6 +3,7 @@ package com.ezequias.despesas.resource;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -56,14 +57,16 @@ public class DespesaItemResource {
 	}
 	
 	@RequestMapping(method=RequestMethod.GET)
-	public ResponseEntity<List<DespesaItem>> findAll() {
-		List<DespesaItem> despesaItem = service.obterTodos();  
-		return ResponseEntity.ok().body(despesaItem);
+	public ResponseEntity<List<DespesaItemDTO>> findAll() {
+		List<DespesaItem> list = service.obterTodos();
+		List<DespesaItemDTO> listDto = list.stream().map(obj -> new DespesaItemDTO(obj)).collect(Collectors.toList());
+		return ResponseEntity.ok().body(listDto);
 	}
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
-	public ResponseEntity<DespesaItem> obterPorId(@PathVariable Integer id) {
+	public ResponseEntity<DespesaItemDTO> obterPorId(@PathVariable Integer id) {
 		DespesaItem despesaItem = service.obterPorId(id);
-		return ResponseEntity.ok().body(despesaItem);
+		DespesaItemDTO despesaItemDTO =  new DespesaItemDTO(despesaItem);
+		return ResponseEntity.ok().body(despesaItemDTO);
 	}
 }

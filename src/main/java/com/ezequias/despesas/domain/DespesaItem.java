@@ -15,6 +15,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class DespesaItem implements Serializable{
 private static final long serialVersionUID = 1L;
@@ -27,6 +29,7 @@ private static final long serialVersionUID = 1L;
 	private Double quantidade = 0.0;
 	private Double total = 0.0;	
 	
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="despesa_id")
 	private Despesa despesa;
