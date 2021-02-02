@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.hibernate.ObjectNotFoundException;
+import com.ezequias.despesas.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -61,7 +61,7 @@ public class DespesaItemService {
 
 	public DespesaItem obterPorId(Integer despesaItemId) throws ObjectNotFoundException {		
 		Optional<DespesaItem> despesaItem = despesaItemRepository.findById(despesaItemId);
-		return despesaItem.orElseThrow(() -> new ObjectNotFoundException("DespesaItem não encontrado.", null));
+		return despesaItem.orElseThrow(() -> new ObjectNotFoundException("DespesaItem não encontrado."));
 	}
 	
 	public List<DespesaItem> obterTodos() throws ObjectNotFoundException {		

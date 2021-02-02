@@ -3,7 +3,7 @@ package com.ezequias.despesas.service;
 import java.util.List;
 import java.util.Optional;
 
-import org.hibernate.ObjectNotFoundException;
+import com.ezequias.despesas.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -47,7 +47,7 @@ public class EntradaService {
 
 	public Entrada obterPorId(Integer entradaId) throws ObjectNotFoundException {		
 		Optional<Entrada> entrada = entradaRepository.findById(entradaId);
-		return entrada.orElseThrow(() -> new ObjectNotFoundException("Entrada não encontrado.", null));
+		return entrada.orElseThrow(() -> new ObjectNotFoundException("Entrada não encontrado."));
 	}
 	
 	public List<Entrada> obterTodos() throws ObjectNotFoundException {		
