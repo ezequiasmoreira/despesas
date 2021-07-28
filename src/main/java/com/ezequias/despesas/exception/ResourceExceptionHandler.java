@@ -21,4 +21,11 @@ public class ResourceExceptionHandler {
 		StandardError err = new StandardError(System.currentTimeMillis(), HttpStatus.BAD_REQUEST.value(), "Integridade de dados", e.getMessage(), request.getRequestURI());
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
 	}
+	
+	@ExceptionHandler(ValidateException.class)
+	public ResponseEntity<StandardError> validateException(ValidateException e, HttpServletRequest request) {
+		System.out.println(e.getCause().getMessage());
+		StandardError err = new StandardError(System.currentTimeMillis(), HttpStatus.BAD_REQUEST.value(), "Validação de dados", e.getMessage(), request.getRequestURI(),e.getCause());
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+	}
 }

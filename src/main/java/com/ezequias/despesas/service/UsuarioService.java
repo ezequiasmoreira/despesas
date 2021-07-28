@@ -10,12 +10,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ezequias.despesas.repository.UsuarioRepository;
+import com.ezequias.despesas.spec.UsuarioSpec;
 
 @Service
 public class UsuarioService {
 
 	@Autowired
 	private UsuarioRepository usuarioRepository;
+	@Autowired
+	private UsuarioSpec usuarioSpec;
 
 	public Usuario converterParaDTO(UsuarioDTO dto) {		
 		Usuario usuario = new Usuario();
@@ -25,7 +28,8 @@ public class UsuarioService {
 		return usuario;
 	}
 
-	public Usuario salvar(Usuario usuario) {		
+	public Usuario salvar(Usuario usuario) {
+		usuarioSpec.validarEmailDoUsuario(usuario);
 		usuario.setId(null);
 		return usuarioRepository.save(usuario);
 	}

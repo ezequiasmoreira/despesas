@@ -9,6 +9,7 @@ public class StandardError implements Serializable {
 	private String error;
 	private String message;
 	private String path;
+	private String cause;
 	
 	public StandardError(Long timestamp, Integer status, String error, String message, String path) {
 		super();
@@ -17,6 +18,24 @@ public class StandardError implements Serializable {
 		this.error = error;
 		this.message = message;
 		this.path = path;
+	}
+	
+	public StandardError(Long timestamp, Integer status, String error, String message, String path, Throwable throwable) {
+		super();
+		this.timestamp = timestamp;
+		this.status = status;
+		this.error = error;
+		this.message = message;
+		this.path = path;
+		this.cause = throwable.getMessage();
+	}
+
+	public String getCause() {
+		return cause;
+	}
+
+	public void setCause(String cause) {
+		this.cause = cause;
 	}
 
 	public Long getTimestamp() {

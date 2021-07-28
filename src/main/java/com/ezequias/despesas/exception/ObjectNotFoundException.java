@@ -1,6 +1,8 @@
 package com.ezequias.despesas.exception;
 
-public class ObjectNotFoundException extends RuntimeException {
+import java.io.Serializable;
+
+public class ObjectNotFoundException extends RuntimeException implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
