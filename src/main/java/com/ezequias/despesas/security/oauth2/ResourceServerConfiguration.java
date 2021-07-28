@@ -25,7 +25,7 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
                 .invalidateHttpSession(true)
                 .clearAuthentication(true)
                 .and().authorizeRequests()
-                .antMatchers("/users/**").hasAnyRole("ADMIN", "USER")
+                .antMatchers("/usuarios/**").hasAnyRole("ADMIN", "USER")
                 .anyRequest().denyAll()
                 .and()
                 .exceptionHandling()

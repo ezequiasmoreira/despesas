@@ -14,25 +14,25 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.ezequias.despesas.domain.Role;
-import com.ezequias.despesas.domain.User;
+import com.ezequias.despesas.domain.Usuario;
 import com.ezequias.despesas.exception.ObjectNotFoundException;
-import com.ezequias.despesas.repository.UserRepository;
+import com.ezequias.despesas.repository.UsuarioRepository;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
     @Autowired
-    UserRepository userRepository;
+    UsuarioRepository usuarioRepository;
 
 @Override
 public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-    Optional<User> user = userRepository.findByEmail(email);
-    if (!user.isPresent()) {
+    Optional<Usuario> usuario = usuarioRepository.findByEmail(email);
+    if (!usuario.isPresent()) {
         throw new UsernameNotFoundException(String.format("UserNotExist"));
-    } else if (!user.get().isEnabled()) {
+    } else if (!usuario.get().isAtivo()) {
         throw new ObjectNotFoundException(String.format("UserNotEnabled"));
     }
-    return new UserRepositoryUserDetails(user.get());
+    return new UserRepositoryUserDetails(usuario.get());
 }
 
 private final List<GrantedAuthority> getGrantedAuthorities(final Collection<Role> roles) {
@@ -47,10 +47,10 @@ private final List<GrantedAuthority> getGrantedAuthorities(final Collection<Role
         return getGrantedAuthorities(roles);
     }
 
-    private final static class UserRepositoryUserDetails extends User implements UserDetails {
+    private final static class UserRepositoryUserDetails extends Usuario implements UserDetails {
 
-    public UserRepositoryUserDetails(User user) {
-        super(user);
+    public UserRepositoryUserDetails(Usuario usuario) {
+        super(usuario);
     }
 
     @Override
@@ -62,6 +62,12 @@ private final List<GrantedAuthority> getGrantedAuthorities(final Collection<Role
     public String getUsername() {
         return getEmail();
     }
+    
+
+	@Override
+	public String getPassword() {		
+		return getSenha();
+	}
 
     @Override
     public boolean isAccountNonExpired() {
@@ -82,6 +88,7 @@ private final List<GrantedAuthority> getGrantedAuthorities(final Collection<Role
     public boolean isEnabled() {
         return true;
     }
+
 }
 
 }

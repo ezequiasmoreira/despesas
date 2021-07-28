@@ -13,7 +13,7 @@ import com.ezequias.despesas.repository.UsuarioRepository;
 public class UsuarioSpec {
 	@Autowired
 	private UsuarioRepository usuarioRepository;
-	
+	/*
 	public Boolean validarEmailDoUsuario(Usuario usuario) {	
 		Usuario usuarioEmail = usuarioRepository.findByEmail(usuario.getEmail());
 		if (usuarioEmail != null) {
@@ -23,6 +23,6 @@ public class UsuarioSpec {
 					"E-mail: " + usuario.getEmail() + " Já está em uso.",throwable);
 		}
 		return true;
-	}
+	}*/
 
 }
