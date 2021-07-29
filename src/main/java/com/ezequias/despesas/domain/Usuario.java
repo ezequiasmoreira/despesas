@@ -33,7 +33,7 @@ public class Usuario implements Serializable {
     private String senha;
     private boolean ativo;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "USUARIO_ROLE",
 		joinColumns = @JoinColumn(name = "usuario_id"),
 		inverseJoinColumns = @JoinColumn(name = "role_id")
@@ -47,6 +47,7 @@ public class Usuario implements Serializable {
         this.nome = usuarioDTO.getNome();
         this.sobrenome = usuarioDTO.getSobrenome();
         this.email = usuarioDTO.getEmail();
+        this.senha = usuarioDTO.getSenha();
     }
     
     public Usuario(Usuario usuario) {

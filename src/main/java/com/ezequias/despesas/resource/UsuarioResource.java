@@ -2,6 +2,7 @@ package com.ezequias.despesas.resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,12 +38,14 @@ public class UsuarioResource  {
         return ResponseEntity.ok().body(listaDTO);
     }
 	
+	@Secured({"ROLE_USER", "ROLE_ADMIN"})
 	@RequestMapping(value = "/{id}/roles", method = RequestMethod.GET)
     public ResponseEntity<List<Role>> findRoles(@PathVariable Integer id) {
-        Usuario usuario = usuarioService.findById(id);
+       Usuario usuario = usuarioService.findById(id);
         return ResponseEntity.ok().body(usuario.getRoles());
     }
     
+	@Secured({"ROLE_USER", "ROLE_ADMIN"})
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<UsuarioDTO> findById(@PathVariable Integer id) {
         Usuario usuario = usuarioService.findById(id);
@@ -60,6 +63,7 @@ public class UsuarioResource  {
     @CrossOrigin
 	@Transactional(rollbackOn = Exception.class)
     @RequestMapping(method = RequestMethod.PUT)
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     public ResponseEntity<UsuarioDTO> update(@PathVariable Integer id, @RequestBody UsuarioDTO usuarioDTO) {
         Usuario usuario = usuarioService.fromDTO(usuarioDTO);
         usuario.setId(id);
@@ -70,6 +74,7 @@ public class UsuarioResource  {
     @CrossOrigin
    	@Transactional(rollbackOn = Exception.class)
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     public ResponseEntity<Void> delete(@PathVariable Integer id) {
     	usuarioService.delete(id);
         return ResponseEntity.noContent().build();

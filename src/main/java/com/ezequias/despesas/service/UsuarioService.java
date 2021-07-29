@@ -1,14 +1,18 @@
 package com.ezequias.despesas.service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.ezequias.despesas.domain.Role;
 import com.ezequias.despesas.domain.Usuario;
 import com.ezequias.despesas.dto.UsuarioDTO;
 import com.ezequias.despesas.exception.ObjectNotFoundException;
+import com.ezequias.despesas.repository.RoleRepository;
 import com.ezequias.despesas.repository.UsuarioRepository;
 
 @Service
@@ -16,6 +20,12 @@ public class UsuarioService {
 	
 	@Autowired
 	private UsuarioRepository usuarioRepository;
+	
+	@Autowired
+	private RoleRepository roleRepository;
+	
+	@Autowired
+    PasswordEncoder passwordEncoder;
 	
 	public List<Usuario> findAll(){
 		return usuarioRepository.findAll();
@@ -28,6 +38,11 @@ public class UsuarioService {
 	
 	public Usuario salvar(Usuario usuario) {
 		usuario.setId(null);
+		String senha = passwordEncoder.encode(usuario.getSenha());
+		usuario.setSenha(senha);
+		usuario.setAtivo(true);
+		Role role = roleRepository.findByName("ROLE_USER").orElseThrow(() -> new ObjectNotFoundException("ROLE_USER não encontrado!"));
+		usuario.setRoles(Arrays.asList(role)); 
 		return usuarioRepository.save(usuario);
 	}
 	

@@ -6,7 +6,6 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.error.OAuth2AccessDeniedHandler;
-
 @Configuration
 @EnableResourceServer
 public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter {
@@ -21,11 +20,13 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http.
-                logout().logoutSuccessUrl("/").permitAll()
+                logout().logoutSuccessUrl("/clientes").permitAll()
+                .logoutSuccessUrl("/usuarios").permitAll()
                 .invalidateHttpSession(true)
                 .clearAuthentication(true)
                 .and().authorizeRequests()
-                .antMatchers("/usuarios/**").hasAnyRole("ADMIN", "USER")
+                .antMatchers("/usuarios/{id}/roles").hasAnyRole("ADMIN", "USER")
+                .antMatchers("/usuarios/{id}").hasAnyRole("ADMIN", "USER")
                 .anyRequest().denyAll()
                 .and()
                 .exceptionHandling()
